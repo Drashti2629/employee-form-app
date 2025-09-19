@@ -37,9 +37,6 @@ export class EmployeeFormComponent {
       employeeCode: [{ value: '', disabled: true }],
       skills: this.fb.array([])
     });
-
-
-
     this.form.valueChanges.subscribe(() => this.generateEmployeeCode());
   }
 
@@ -91,30 +88,45 @@ export class EmployeeFormComponent {
   }
 
 
-  submit() {
-  if (this.form.invalid) {
-    console.log('Form invalid!');
 
-    const firstInvalid = document.querySelector('.ng-invalid') as HTMLElement;
-    if (firstInvalid) {
-      firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      firstInvalid.focus();
+
+  formSubmitted = false;
+  invalidFields: string[] = [];
+
+  submit() {
+    this.formSubmitted = true;
+    this.invalidFields = [];
+
+    if (this.form.invalid) {
+      Object.keys(this.form.controls).forEach(key => {
+        const control = this.form.get(key);
+        if (control && control.invalid) {
+          this.invalidFields.push(this.getFieldLabel(key));
+          control.markAsTouched();
+        }
+      });
+      return;
     }
 
-    const invalidFields = Object.keys(this.form.controls)
-      .filter(key => this.form.get(key)?.invalid);
-    alert('Please fill the following required/invalid fields: \n' + invalidFields.join(', '));
-
-    return;
+    this.submittedData = this.form.getRawValue();
+    console.log('Form submitted:', this.submittedData);
   }
 
-  this.submittedData = this.form.getRawValue();
-  console.log('Form submitted:', this.submittedData);
-}
 
-
-
-
+  getFieldLabel(field: string): string {
+    const map: Record<string, string> = {
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      email: 'Email',
+      phone: 'Phone',
+      birthDate: 'Birth Date',
+      joiningDate: 'Joining Date',
+      department: 'Department',
+      subDepartment: 'Sub Department',
+      employeeCode: 'Employee Code'
+    };
+    return map[field] || field;
+  }
   reset() {
     this.form.reset();
   }
@@ -138,24 +150,18 @@ export class EmployeeFormComponent {
     this.form.patchValue(ev);
   }
   onSkillsChange(skills: any[]) {
-  const skillsArray = this.skillsArray;
-  skillsArray.clear();
+    const skillsArray = this.skillsArray;
+    skillsArray.clear();
 
-  skills
-    .filter(s => s.skill && s.skill.trim() !== '') 
-    .forEach(skill => {
-      skillsArray.push(this.fb.group({
-        id: [skill.id || null],              
-        skill: [skill.skill, Validators.required],
-        additionalNotes: [skill.additionalNotes]
-      }));
-    });
-}
-
-
-
-
-
-
+    skills
+      .filter(s => s.skill && s.skill.trim() !== '')
+      .forEach(skill => {
+        skillsArray.push(this.fb.group({
+          id: [skill.id || null],
+          skill: [skill.skill, Validators.required],
+          additionalNotes: [skill.additionalNotes]
+        }));
+      });
+  }
 
 }

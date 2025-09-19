@@ -1,6 +1,7 @@
 <div class="grid">
+
   <div class="col">
-    <label for="department">Department</label>
+    <label for="department">Department <span class="req">*</span></label>
     <select id="department" [value]="selectedDept" (change)="onDeptChange($event)">
       <option value="">-- Select Department --</option>
       <option *ngFor="let dept of departmentList" [value]="dept">{{ dept }}</option>
@@ -8,7 +9,7 @@
   </div>
 
   <div class="col" *ngIf="selectedDept">
-    <label for="subDept">Sub Department</label><span class="req"> *</span>
+    <label for="subDept">Sub Department <span class="req">*</span></label>
     <select id="subDept" [value]="selectedSub" (change)="onSubDeptChange($event)">
       <option value="">-- Select Sub Department --</option>
       <option *ngFor="let sub of subDepartmentList" [value]="sub">{{ sub }}</option>

@@ -1,74 +1,86 @@
-<form [formGroup]="form" (ngSubmit)="submit()" novalidate class="card">
+<form [formGroup]="form" (ngSubmit)="submit()" class="employee-card" novalidate>
 
 
-  <div class="grid">
-    <div class="col">
+  <div class="form-row">
+    <div class="form-group">
       <label>First Name *</label>
-      <input formControlName="firstName" />
-      <div class="error" *ngIf="f['firstName'].invalid && f['firstName'].touched">
-  Required
-</div>
-    </div>
-    <div class="col">
-      <label>Last Name *</label>
-      <input formControlName="lastName" />
-      <div class="error" *ngIf="f['lastName'].invalid && f['lastName'].touched">
+      <input formControlName="firstName" placeholder="Enter First Name" />
+      <small class="error" *ngIf="f['firstName'].invalid && f['firstName'].touched">
         Required
-      </div>
+      </small>
+    </div>
+    <div class="form-group">
+      <label>Last Name *</label>
+      <input formControlName="lastName" placeholder="Enter Last Name" />
+      <small class="error" *ngIf="f['lastName'].invalid && f['lastName'].touched">
+        Required
+      </small>
     </div>
   </div>
 
 
-  <div class="grid">
-    <div class="col">
+  <div class="form-row">
+    <div class="form-group">
       <label>Email *</label>
-      <input type="email" formControlName="email" />
+      <input type="email" formControlName="email" placeholder="Enter Email" />
     </div>
-    <div class="col">
+    <div class="form-group">
       <label>Phone *</label>
-      <input type="tel" formControlName="phone" />
+      <input type="tel" formControlName="phone" placeholder="Enter Phone Number" />
     </div>
   </div>
 
 
-  <div class="grid">
-    <div class="col">
+  <div class="form-row">
+    <div class="form-group">
       <label>Birth Date</label>
       <input type="date" formControlName="birthDate" />
     </div>
-    <div class="col">
+    <div class="form-group">
       <label>Joining Date *</label>
       <input type="date" formControlName="joiningDate" />
     </div>
   </div>
 
 
-  <div class="grid">
-    <div class="col">
+  <div class="form-row">
+    <div class="form-group full-width">
       <label>Employee Code</label>
       <input formControlName="employeeCode" readonly />
     </div>
   </div>
 
 
-  <section class="section">
+  <section class="form-section">
     <h3>Department</h3>
     <app-department (selectionChange)="onDeptSelection($event)"></app-department>
   </section>
 
-  <section class="section">
+
+  <section class="form-section">
     <h3>Skills</h3>
     <app-skills-form (skillsChange)="onSkillsChange($event)"></app-skills-form>
-
   </section>
 
-
-  <div class="actions">
-    <button type="submit" class="primary">Submit</button>
-    <button type="button" (click)="reset()">Reset</button>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" class="btn btn-secondary" (click)="reset()">Reset</button>
   </div>
+
 </form>
-<section *ngIf="submittedData" class="submitted-data">
+
+
+<section *ngIf="submittedData" class="submitted-preview">
   <h3>Submitted Payload</h3>
   <pre>{{ submittedData | json }}</pre>
 </section>
+<div *ngIf="form.invalid && formSubmitted" class="alert">
+  Please fill all required fields correctly.
+</div>
+
+<div *ngIf="invalidFields.length" class="alert alert-danger">
+  <strong>Please fix the following fields:</strong>
+  <ul>
+    <li *ngFor="let field of invalidFields">{{ field }}</li>
+  </ul>
+</div>
