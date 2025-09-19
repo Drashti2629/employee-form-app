@@ -20,3 +20,11 @@
   display: flex;
   gap: 1rem;
 }
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+select.ng-invalid.ng-touched {
+  border: 1px solid red;
+}

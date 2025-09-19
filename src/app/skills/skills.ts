@@ -11,7 +11,15 @@ import { CommonModule } from '@angular/common';
 })
 export class SkillsFormComponent {
   form: FormGroup;
-  allSkills = ['Angular', 'React', 'Node.js', 'Python', 'Java'];
+  allSkills = [
+    { id: 1, name: 'Angular' },
+    { id: 2, name: 'React' },
+    { id: 3, name: 'Node.js' },
+    { id: 4, name: 'Python' },
+    { id: 5, name: 'Java' }
+  ];
+
+
   filtered: any[][] = [[]];
   @Output() skillsChange = new EventEmitter<any[]>();
 
@@ -34,10 +42,12 @@ export class SkillsFormComponent {
   }
   createSkillGroupWithValue(skill?: any): FormGroup {
     return this.fb.group({
+      id: [skill?.id || ''],
       skill: [skill?.skill || '', Validators.required],
       additionalNotes: [skill?.additionalNotes || '']
     });
   }
+
 
   get skillsArray(): FormArray {
     return this.form.get('skills') as FormArray;
@@ -45,25 +55,33 @@ export class SkillsFormComponent {
 
   createSkillGroup(): FormGroup {
     return this.fb.group({
+      id: [''],
       skill: ['', Validators.required],
       additionalNotes: ['']
     });
   }
 
+
   filterSkills(index: number) {
     const value = this.skillsArray.at(index).get('skill')?.value?.toLowerCase() || '';
-    this.filtered[index] = this.allSkills.filter(s => s.toLowerCase().includes(value));
-    this.emitSkills(); // <-- emit after filtering
+    this.filtered[index] = this.allSkills.filter(s => s.name.toLowerCase().includes(value));
   }
 
-  pickSuggestion(i: number, skill: string) {
-    this.skillsArray.at(i).get('skill')?.setValue(skill);
+
+  pickSuggestion(i: number, skillObj: { id: number, name: string }) {
+    this.skillsArray.at(i).patchValue({
+      skill: skillObj.name,
+      id: skillObj.id
+    });
     this.filtered[i] = [];
-    this.emitSkills(); // <-- emit after picking suggestion
+    this.emitSkills();
   }
+
+
+
 
   addRow() {
-    // only add a new row if the last row is not empty
+
     const last = this.skillsArray.at(this.skillsArray.length - 1);
     if (!last || last.get('skill')?.value) {
       this.skillsArray.push(this.createSkillGroup());
@@ -76,7 +94,7 @@ export class SkillsFormComponent {
   removeRow(i: number) {
     this.skillsArray.removeAt(i);
     this.updateFiltered();
-    this.emitSkills(); // <-- emit after removing
+    this.emitSkills();
   }
 
 
@@ -88,12 +106,5 @@ export class SkillsFormComponent {
   emitSkills() {
     this.skillsChange.emit(this.skillsArray.value);
   }
-  submit() {
-    debugger
-    if (this.form.invalid) {
-      console.log('Form invalid!');
-      return;
-    }
-    console.log(this.form.value);
-  }
+
 }

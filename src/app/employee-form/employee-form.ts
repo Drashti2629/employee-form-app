@@ -92,13 +92,26 @@ export class EmployeeFormComponent {
 
 
   submit() {
-    if (this.form.invalid) {
-      console.log('Form invalid!');
-      return;
+  if (this.form.invalid) {
+    console.log('Form invalid!');
+
+    const firstInvalid = document.querySelector('.ng-invalid') as HTMLElement;
+    if (firstInvalid) {
+      firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstInvalid.focus();
     }
-    this.submittedData = this.form.getRawValue();
-    console.log('Form submitted:', this.form.getRawValue());
+
+    const invalidFields = Object.keys(this.form.controls)
+      .filter(key => this.form.get(key)?.invalid);
+    alert('Please fill the following required/invalid fields: \n' + invalidFields.join(', '));
+
+    return;
   }
+
+  this.submittedData = this.form.getRawValue();
+  console.log('Form submitted:', this.submittedData);
+}
+
 
 
 
@@ -125,18 +138,19 @@ export class EmployeeFormComponent {
     this.form.patchValue(ev);
   }
   onSkillsChange(skills: any[]) {
-    const skillsArray = this.skillsArray;
-    skillsArray.clear();
+  const skillsArray = this.skillsArray;
+  skillsArray.clear();
 
-    skills
-      .filter(s => s.skill && s.skill.trim() !== '') // remove empty skills
-      .forEach(skill => {
-        skillsArray.push(this.fb.group({
-          skill: [skill.skill, Validators.required],
-          additionalNotes: [skill.additionalNotes]
-        }));
-      });
-  }
+  skills
+    .filter(s => s.skill && s.skill.trim() !== '') 
+    .forEach(skill => {
+      skillsArray.push(this.fb.group({
+        id: [skill.id || null],              
+        skill: [skill.skill, Validators.required],
+        additionalNotes: [skill.additionalNotes]
+      }));
+    });
+}
 
 
 
