@@ -1,0 +1,22 @@
+.grid {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.error {
+  color: red;
+  font-size: 12px;
+}
+.req {
+  color: red;
+}
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}

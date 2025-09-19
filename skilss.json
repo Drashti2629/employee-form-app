@@ -1,0 +1,12 @@
+[
+{"id" : 1 , "name": "Angular"},
+{"id" : 2 , "name": "TypeScript"},
+{"id" : 3 , "name": "RxJS"},
+{"id" : 4 , "name": "HTML"},
+{"id" : 5 , "name": "CSS"},
+{"id" : 6 , "name": "Node.js"},
+{"id" : 7 , "name": "Express"},
+{"id" : 8 , "name": "MongoDB"},
+{"id" : 9 , "name": "Jasmine"},
+{"id" : 10 , "name": "Karma"}
+]

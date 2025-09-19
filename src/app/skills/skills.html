@@ -1,0 +1,24 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div formArrayName="skills">
+    <div class="skills-rows" *ngFor="let group of skillsArray.controls; let i = index" [formGroupName]="i">
+
+      <div class="row">
+        <label>Skill *</label>
+        <input formControlName="skill" placeholder="Type or search skill" autocomplete="off"
+          (input)="filterSkills(i)" />
+
+        <ul *ngIf="filtered[i]?.length">
+          <li *ngFor="let s of filtered[i]" (click)="pickSuggestion(i,s)">{{s}}</li>
+        </ul>
+      </div>
+
+      <div class="actions">
+        <button type="button" (click)="removeRow(i)" *ngIf="skillsArray.length > 1">Remove</button>
+        <button type="button" (click)="addRow()" *ngIf="i === skillsArray.length - 1">Add</button>
+
+      </div>
+    </div>
+  </div>
+
+
+</form>

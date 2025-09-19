@@ -1,0 +1,74 @@
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate class="card">
+
+
+  <div class="grid">
+    <div class="col">
+      <label>First Name *</label>
+      <input formControlName="firstName" />
+      <div class="error" *ngIf="f['firstName'].invalid && f['firstName'].touched">
+        Required
+      </div>
+    </div>
+    <div class="col">
+      <label>Last Name *</label>
+      <input formControlName="lastName" />
+      <div class="error" *ngIf="f['lastName'].invalid && f['lastName'].touched">
+        Required
+      </div>
+    </div>
+  </div>
+
+
+  <div class="grid">
+    <div class="col">
+      <label>Email *</label>
+      <input type="email" formControlName="email" />
+    </div>
+    <div class="col">
+      <label>Phone *</label>
+      <input type="tel" formControlName="phone" />
+    </div>
+  </div>
+
+
+  <div class="grid">
+    <div class="col">
+      <label>Birth Date</label>
+      <input type="date" formControlName="birthDate" />
+    </div>
+    <div class="col">
+      <label>Joining Date *</label>
+      <input type="date" formControlName="joiningDate" />
+    </div>
+  </div>
+
+
+  <div class="grid">
+    <div class="col">
+      <label>Employee Code</label>
+      <input formControlName="employeeCode" readonly />
+    </div>
+  </div>
+
+
+  <section class="section">
+    <h3>Department</h3>
+    <app-department (selectionChange)="onDeptSelection($event)"></app-department>
+  </section>
+
+  <section class="section">
+    <h3>Skills</h3>
+    <app-skills-form (skillsChange)="onSkillsChange($event)"></app-skills-form>
+
+  </section>
+
+
+  <div class="actions">
+    <button type="submit" class="primary">Submit</button>
+    <button type="button" (click)="reset()">Reset</button>
+  </div>
+</form>
+<section *ngIf="submittedData" class="submitted-data">
+  <h3>Submitted Payload</h3>
+  <pre>{{ submittedData | json }}</pre>
+</section>
